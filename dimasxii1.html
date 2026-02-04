@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dimas Prasetyo Adji - Steampunk Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Crimson+Text:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @keyframes gearRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes gearRotateReverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    
+    @keyframes steamFloat {
+      0%, 100% { opacity: 0.3; transform: translateY(0) scale(1); }
+      50% { opacity: 0.6; transform: translateY(-20px) scale(1.1); }
+    }
+    
+    @keyframes pipePulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
+    
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: 0.8; }
+      94% { opacity: 1; }
+      96% { opacity: 0.9; }
+      97% { opacity: 1; }
+    }
+    
+    .gear-spin {
+      animation: gearRotate 20s linear infinite;
+    }
+    
+    .gear-spin-reverse {
+      animation: gearRotateReverse 15s linear infinite;
+    }
+    
+    .steam-float {
+      animation: steamFloat 4s ease-in-out infinite;
+    }
+    
+    .pipe-glow {
+      animation: pipePulse 3s ease-in-out infinite;
+    }
+    
+    .flicker {
+      animation: flicker 5s linear infinite;
+    }
+    
+    .steampunk-border {
+      border: 3px solid #8B4513;
+      box-shadow: 
+        inset 0 0 20px rgba(139, 69, 19, 0.3),
+        0 0 15px rgba(205, 133, 63, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+    
+    .brass-text {
+      background: linear-gradient(180deg, #D4A84B 0%, #B8860B 50%, #8B6914 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+    }
+    
+    .copper-card {
+      background: linear-gradient(145deg, #2D1810 0%, #1A0F0A 50%, #0D0705 100%);
+      border: 2px solid #8B4513;
+      box-shadow: 
+        inset 0 1px 0 rgba(205, 133, 63, 0.2),
+        0 8px 24px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(139, 69, 19, 0.5);
+    }
+    
+    .rivet {
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle at 30% 30%, #D4A84B, #8B6914);
+      border-radius: 50%;
+      box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.5),
+        1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        #8B4513 10%, 
+        #CD853F 30%,
+        #D4A84B 50%,
+        #CD853F 70%,
+        #8B4513 90%, 
+        transparent 100%
+      );
+      position: relative;
+    }
+    
+    .section-divider::before,
+    .section-divider::after {
+      content: '⚙';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #D4A84B;
+      font-size: 24px;
+    }
+    
+    .section-divider::before { left: 20%; }
+    .section-divider::after { right: 20%; }
+    
+    .skill-bar {
+      background: linear-gradient(90deg, #1A0F0A, #2D1810);
+      border: 1px solid #5C3317;
+      overflow: hidden;
+    }
+    
+    .skill-fill {
+      background: linear-gradient(90deg, #8B4513, #CD853F, #D4A84B);
+      box-shadow: 0 0 10px rgba(212, 168, 75, 0.5);
+    }
+
+    .timeline-line {
+      width: 4px;
+      background: linear-gradient(180deg, #8B4513, #CD853F, #8B4513);
+      box-shadow: 0 0 8px rgba(205, 133, 63, 0.4);
+    }
+    
+    .timeline-dot {
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle at 30% 30%, #D4A84B, #8B4513);
+      border: 3px solid #CD853F;
+      box-shadow: 0 0 12px rgba(212, 168, 75, 0.6);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #D4A84B, #CD853F);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .nav-link:hover {
+      color: #D4A84B;
+      text-shadow: 0 0 10px rgba(212, 168, 75, 0.5);
+    }
+
+    .profile-frame {
+      position: relative;
+      padding: 8px;
+      background: linear-gradient(145deg, #8B4513, #5C3317);
+      border-radius: 12px;
+      box-shadow: 
+        0 0 20px rgba(139, 69, 19, 0.5),
+        inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .profile-frame::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 2px solid #CD853F;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .info-tag {
+      background: linear-gradient(135deg, #2D1810, #1A0F0A);
+      border: 1px solid #5C3317;
+      border-left: 4px solid #CD853F;
+      transition: all 0.3s ease;
+    }
+    
+    .info-tag:hover {
+      border-left-color: #D4A84B;
+      box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+      transform: translateX(4px);
+    }
+
+    .quote-box {
+      position: relative;
+      background: linear-gradient(145deg, rgba(45, 24, 16, 0.9), rgba(26, 15, 10, 0.95));
+      border: 2px solid #8B4513;
+      border-radius: 8px;
+    }
+    
+    .quote-box::before,
+    .quote-box::after {
+      font-family: 'Cinzel', serif;
+      font-size: 48px;
+      color: #CD853F;
+      opacity: 0.6;
+      line-height: 1;
+    }
+    
+    .quote-box::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      left: 15px;
+    }
+    
+    .quote-box::after {
+      content: '"';
+      position: absolute;
+      bottom: -30px;
+      right: 15px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #1A0F0A;
+      border-left: 1px solid #5C3317;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #8B4513, #5C3317);
+      border-radius: 6px;
+      border: 2px solid #1A0F0A;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #CD853F, #8B4513);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-gradient-to-b from-[#0D0705] via-[#1A0F0A] to-[#0D0705] text-[#E8DCC4] overflow-auto" style="font-family: 'Crimson Text', serif;"><!-- Background Decorations -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden"><!-- Large Gear Top Right -->
+   <svg class="absolute -top-20 -right-20 w-80 h-80 gear-spin opacity-10" viewbox="0 0 100 100"><path fill="#8B4513" d="M50 10 L53 10 L55 5 L60 5 L62 10 L65 10 L67 15 L70 15 L70 20 L75 22 L75 27 L80 30 L78 35 L82 40 L80 45 L85 48 L83 53 L88 55 L85 60 L88 65 L83 68 L85 73 L80 75 L82 80 L77 80 L75 85 L70 83 L67 88 L62 85 L58 90 L53 87 L50 90 L47 87 L42 90 L38 85 L33 88 L30 83 L25 85 L23 80 L18 80 L20 75 L15 73 L17 68 L12 65 L15 60 L12 55 L17 53 L15 48 L20 45 L18 40 L22 35 L20 30 L25 27 L25 22 L30 20 L30 15 L33 15 L35 10 L40 10 L42 5 L47 5 L50 10 Z M50 30 A20 20 0 1 0 50 70 A20 20 0 1 0 50 30" />
+   </svg><!-- Medium Gear Bottom Left -->
+   <svg class="absolute -bottom-10 -left-10 w-60 h-60 gear-spin-reverse opacity-10" viewbox="0 0 100 100"><path fill="#CD853F" d="M50 10 L53 10 L55 5 L60 5 L62 10 L65 10 L67 15 L70 15 L70 20 L75 22 L75 27 L80 30 L78 35 L82 40 L80 45 L85 48 L83 53 L88 55 L85 60 L88 65 L83 68 L85 73 L80 75 L82 80 L77 80 L75 85 L70 83 L67 88 L62 85 L58 90 L53 87 L50 90 L47 87 L42 90 L38 85 L33 88 L30 83 L25 85 L23 80 L18 80 L20 75 L15 73 L17 68 L12 65 L15 60 L12 55 L17 53 L15 48 L20 45 L18 40 L22 35 L20 30 L25 27 L25 22 L30 20 L30 15 L33 15 L35 10 L40 10 L42 5 L47 5 L50 10 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35" />
+   </svg><!-- Steam Clouds -->
+   <div class="absolute top-1/4 left-10 w-20 h-20 rounded-full bg-gradient-radial from-[#4A3728] to-transparent opacity-20 steam-float blur-xl"></div>
+   <div class="absolute top-1/2 right-20 w-32 h-32 rounded-full bg-gradient-radial from-[#4A3728] to-transparent opacity-15 steam-float blur-xl" style="animation-delay: -2s;"></div><!-- Pipe Decorations -->
+   <div class="absolute top-0 left-1/4 w-2 h-40 bg-gradient-to-b from-[#5C3317] via-[#8B4513] to-[#5C3317] rounded-full pipe-glow opacity-30"></div>
+   <div class="absolute bottom-0 right-1/3 w-2 h-32 bg-gradient-to-t from-[#5C3317] via-[#8B4513] to-[#5C3317] rounded-full pipe-glow opacity-30" style="animation-delay: -1.5s;"></div>
+  </div>
+  <div class="relative z-10 w-full min-h-full"><!-- Navigation -->
+   <nav class="sticky top-0 z-50 bg-gradient-to-b from-[#1A0F0A] to-[#1A0F0A]/95 border-b-2 border-[#5C3317] backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+     <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+       <svg class="w-8 h-8 gear-spin" viewbox="0 0 100 100"><path fill="#D4A84B" d="M50 15 L53 15 L55 10 L60 12 L62 8 L67 12 L70 10 L73 15 L78 15 L78 20 L83 23 L80 28 L85 32 L82 37 L88 42 L83 47 L88 52 L83 57 L88 62 L82 65 L85 70 L80 73 L83 78 L78 80 L78 85 L73 85 L70 90 L67 88 L62 92 L60 88 L55 90 L53 85 L50 85 L47 85 L45 90 L40 88 L38 92 L33 88 L30 90 L27 85 L22 85 L22 80 L17 78 L20 73 L15 70 L18 65 L12 62 L17 57 L12 52 L17 47 L12 42 L18 37 L15 32 L20 28 L17 23 L22 20 L22 15 L27 15 L30 10 L33 12 L38 8 L40 12 L45 10 L47 15 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35" />
+       </svg><span class="font-bold text-xl brass-text" style="font-family: 'Cinzel', serif;">DPA</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8 text-[#CD853F]" style="font-family: 'Cinzel', serif;"><a href="#about" class="nav-link">Tentang</a> <a href="#education" class="nav-link">Pendidikan</a> <a href="#experience" class="nav-link">Pengalaman</a> <a href="#skills" class="nav-link">Keahlian</a>
+      </div>
+      <div class="flex md:hidden">
+       <svg class="w-6 h-6 text-[#CD853F]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <header class="relative py-16 md:py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="copper-card rounded-2xl p-8 md:p-12 relative overflow-hidden"><!-- Corner Rivets -->
+      <div class="rivet absolute top-4 left-4"></div>
+      <div class="rivet absolute top-4 right-4"></div>
+      <div class="rivet absolute bottom-4 left-4"></div>
+      <div class="rivet absolute bottom-4 right-4"></div>
+      <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12"><!-- Profile Image -->
+       <div class="profile-frame flex-shrink-0">
+        <div class="w-48 h-48 md:w-56 md:h-56 rounded-lg overflow-hidden bg-gradient-to-br from-[#2D1810] to-[#1A0F0A] flex items-center justify-center"><!-- Anime-style Avatar SVG -->
+         <img
+  src="Horus.png"
+  alt="Foto Dimas Prasetyo Adji"
+  class="w-full h-full object-cover"
+/><!-- Background --> <defs>
+           <lineargradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2D1810" />
+            <stop offset="100%" style="stop-color:#4A3728" />
+           </lineargradient>
+           <lineargradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a1a1a" />
+            <stop offset="100%" style="stop-color:#333" />
+           </lineargradient>
+           <lineargradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#F5DEB3" />
+            <stop offset="100%" style="stop-color:#DEB887" />
+           </lineargradient>
+           <lineargradient id="gogglesGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#D4A84B" />
+            <stop offset="50%" style="stop-color:#8B4513" />
+            <stop offset="100%" style="stop-color:#CD853F" />
+           </lineargradient>
+           <radialgradient id="lensGrad" cx="30%" cy="30%">
+            <stop offset="0%" style="stop-color:#87CEEB" />
+            <stop offset="100%" style="stop-color:#4682B4" />
+           </radialgradient>
+          </defs> <rect fill="url(#bgGrad)" width="200" height="200" /> <!-- Steampunk Goggles on Head --> <ellipse cx="100" cy="45" rx="45" ry="12" fill="url(#gogglesGrad)" /> <ellipse cx="70" cy="45" rx="18" ry="10" fill="#2D1810" stroke="#D4A84B" stroke-width="3" /> <ellipse cx="130" cy="45" rx="18" ry="10" fill="#2D1810" stroke="#D4A84B" stroke-width="3" /> <ellipse cx="70" cy="45" rx="12" ry="6" fill="url(#lensGrad)" opacity="0.8" /> <ellipse cx="130" cy="45" rx="12" ry="6" fill="url(#lensGrad)" opacity="0.8" /> <rect x="88" y="42" width="24" height="6" fill="#8B4513" /> <!-- Hair --> <path d="M40 90 Q40 40 100 35 Q160 40 160 90 L155 80 Q150 50 100 45 Q50 50 45 80 Z" fill="url(#hairGrad)" /> <path d="M45 85 Q50 70 70 65 L65 80 Z" fill="#1a1a1a" /> <path d="M155 85 Q150 70 130 65 L135 80 Z" fill="#1a1a1a" /> <path d="M60 55 Q80 45 100 50 L95 60 Q80 55 65 62 Z" fill="#1a1a1a" /> <path d="M140 55 Q120 45 100 50 L105 60 Q120 55 135 62 Z" fill="#1a1a1a" /> <!-- Face --> <ellipse cx="100" cy="105" rx="50" ry="55" fill="url(#skinGrad)" /> <!-- Eyes --> <ellipse cx="75" cy="100" rx="15" ry="12" fill="white" /> <ellipse cx="125" cy="100" rx="15" ry="12" fill="white" /> <ellipse cx="77" cy="101" rx="8" ry="9" fill="#3D2314" /> <ellipse cx="127" cy="101" rx="8" ry="9" fill="#3D2314" /> <ellipse cx="79" cy="99" rx="3" ry="3" fill="white" /> <ellipse cx="129" cy="99" rx="3" ry="3" fill="white" /> <!-- Eyebrows --> <path d="M60 85 Q75 80 90 87" stroke="#1a1a1a" stroke-width="3" fill="none" /> <path d="M140 85 Q125 80 110 87" stroke="#1a1a1a" stroke-width="3" fill="none" /> <!-- Nose --> <path d="M100 105 L98 120 Q100 123 102 120 Z" fill="#DEB887" /> <!-- Mouth - Confident Smile --> <path d="M85 135 Q100 145 115 135" stroke="#8B4513" stroke-width="2" fill="none" /> <!-- Steampunk Jacket --> <path d="M35 200 L45 155 Q70 145 100 150 Q130 145 155 155 L165 200 Z" fill="#2D1810" /> <path d="M50 160 L55 200" stroke="#8B4513" stroke-width="2" /> <path d="M150 160 L145 200" stroke="#8B4513" stroke-width="2" /> <circle cx="65" cy="170" r="4" fill="#D4A84B" /> <circle cx="65" cy="185" r="4" fill="#D4A84B" /> <circle cx="135" cy="170" r="4" fill="#D4A84B" /> <circle cx="135" cy="185" r="4" fill="#D4A84B" /> <!-- Collar --> <path d="M70 155 L85 165 L100 155 L115 165 L130 155" stroke="#CD853F" stroke-width="3" fill="none" /> <!-- Gear Accessory --> <g transform="translate(155, 140) scale(0.4)">
+           <path fill="#D4A84B" d="M25 5 L27 5 L28 2 L32 3 L33 0 L37 3 L40 2 L42 6 L46 7 L45 11 L50 14 L47 18 L50 23 L46 26 L48 31 L44 33 L45 38 L41 38 L40 43 L36 41 L33 45 L30 42 L26 44 L24 40 L20 40 L20 36 L15 34 L17 30 L13 26 L17 23 L14 18 L18 15 L15 11 L19 9 L18 5 L22 5 L25 5 Z M25 15 A10 10 0 1 0 25 35 A10 10 0 1 0 25 15" />
+          </g>
+         </svg>
+        </div>
+       </div><!-- Hero Text -->
+       <div class="flex-1 text-center md:text-left">
+        <h1 id="hero-name" class="text-4xl md:text-5xl lg:text-6xl font-bold brass-text mb-4 flicker" style="font-family: 'Cinzel', serif;">DIMAS PRASETYO ADJI</h1>
+        <div class="flex items-center justify-center md:justify-start gap-2 mb-6">
+         <div class="h-px w-12 bg-gradient-to-r from-transparent to-[#CD853F]"></div><span class="text-[#CD853F] tracking-widest text-sm" style="font-family: 'Cinzel', serif;">CREATIVE PROFESSIONAL</span>
+         <div class="h-px w-12 bg-gradient-to-l from-transparent to-[#CD853F]"></div>
+        </div><!-- Quote -->
+        <div class="quote-box p-6 mt-6">
+         <p id="hero-quote" class="text-xl md:text-2xl italic text-[#E8DCC4] text-center" style="font-family: 'Crimson Text', serif;">"Iyain aja dulu, Yasudah dan Syukur"</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header><!-- Section Divider -->
+   <div class="section-divider max-w-4xl mx-auto my-8"></div><!-- About Section -->
+   <section id="about" class="py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="text-3xl md:text-4xl font-bold brass-text text-center mb-12" style="font-family: 'Cinzel', serif;">⚙ Informasi Pribadi ⚙</h2>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="info-tag p-4 rounded-r-lg">
+       <div class="flex items-center gap-3">
+        <svg class="w-6 h-6 text-[#D4A84B]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <div>
+         <p class="text-xs text-[#8B7355] uppercase tracking-wider">Nama</p>
+         <p class="text-[#E8DCC4] font-semibold">Dimas Prasetyo Adji</p>
+        </div>
+       </div>
+      </div>
+      <div class="info-tag p-4 rounded-r-lg">
+       <div class="flex items-center gap-3">
+        <svg class="w-6 h-6 text-[#D4A84B]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <div>
+         <p class="text-xs text-[#8B7355] uppercase tracking-wider">Kelahiran</p>
+         <p class="text-[#E8DCC4] font-semibold">12 November 2008</p>
+        </div>
+       </div>
+      </div>
+      <div class="info-tag p-4 rounded-r-lg">
+       <div class="flex items-center gap-3">
+        <svg class="w-6 h-6 text-[#D4A84B]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+        </svg>
+        <div>
+         <p class="text-xs text-[#8B7355] uppercase tracking-wider">Jenis Kelamin</p>
+         <p class="text-[#E8DCC4] font-semibold">Laki-Laki</p>
+        </div>
+       </div>
+      </div>
+      <div class="info-tag p-4 rounded-r-lg">
+       <div class="flex items-center gap-3">
+        <svg class="w-6 h-6 text-[#D4A84B]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        <div>
+         <p class="text-xs text-[#8B7355] uppercase tracking-wider">Agama</p>
+         <p class="text-[#E8DCC4] font-semibold">Islam</p>
+        </div>
+       </div>
+      </div>
+      <div class="info-tag p-4 rounded-r-lg">
+       <div class="flex items-center gap-3">
+        <svg class="w-6 h-6 text-[#D4A84B]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+        </svg>
+        <div>
+         <p class="text-xs text-[#8B7355] uppercase tracking-wider">Kewarganegaraan</p>
+         <p class="text-[#E8DCC4] font-semibold">Indonesia</p>
+        </div>
+       </div>
+      </div>
+      <div class="info-tag p-4 rounded-r-lg">
+       <div class="flex items-center gap-3">
+        <svg class="w-6 h-6 text-[#D4A84B]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div>
+         <p class="text-xs text-[#8B7355] uppercase tracking-wider">Hobi</p>
+         <p class="text-[#E8DCC4] font-semibold">Workout 💪</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider max-w-4xl mx-auto my-8"></div><!-- Education Section -->
+   <section id="education" class="py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="text-3xl md:text-4xl font-bold brass-text text-center mb-12" style="font-family: 'Cinzel', serif;">⚙ Riwayat Pendidikan ⚙</h2>
+     <div class="relative"><!-- Timeline -->
+      <div class="absolute left-4 md:left-1/2 top-0 bottom-0 timeline-line transform md:-translate-x-1/2"></div><!-- Education Items -->
+      <div class="space-y-8"><!-- TK -->
+       <div class="relative flex items-center md:justify-center">
+        <div class="timeline-dot absolute left-4 md:left-1/2 transform md:-translate-x-1/2 rounded-full z-10"></div>
+        <div class="ml-12 md:ml-0 md:w-5/12 md:mr-auto copper-card p-6 rounded-xl">
+         <div class="flex items-center gap-2 mb-2"><span class="text-[#D4A84B] font-bold" style="font-family: 'Cinzel', serif;">2013 - 2014</span>
+         </div>
+         <h3 class="text-xl font-bold text-[#E8DCC4] mb-1" style="font-family: 'Cinzel', serif;">TK AL-AKBAR</h3>
+         <p class="text-[#8B7355]">Taman Kanak-Kanak</p>
+        </div>
+       </div><!-- SD -->
+       <div class="relative flex items-center md:justify-center">
+        <div class="timeline-dot absolute left-4 md:left-1/2 transform md:-translate-x-1/2 rounded-full z-10"></div>
+        <div class="ml-12 md:ml-0 md:w-5/12 md:ml-auto copper-card p-6 rounded-xl">
+         <div class="flex items-center gap-2 mb-2"><span class="text-[#D4A84B] font-bold" style="font-family: 'Cinzel', serif;">2014 - 2020</span>
+         </div>
+         <h3 class="text-xl font-bold text-[#E8DCC4] mb-1" style="font-family: 'Cinzel', serif;">SDN CIGADUNG SUBANG</h3>
+         <p class="text-[#8B7355]">Sekolah Dasar</p>
+        </div>
+       </div><!-- SMP -->
+       <div class="relative flex items-center md:justify-center">
+        <div class="timeline-dot absolute left-4 md:left-1/2 transform md:-translate-x-1/2 rounded-full z-10"></div>
+        <div class="ml-12 md:ml-0 md:w-5/12 md:mr-auto copper-card p-6 rounded-xl">
+         <div class="flex items-center gap-2 mb-2"><span class="text-[#D4A84B] font-bold" style="font-family: 'Cinzel', serif;">2020 - 2023</span>
+         </div>
+         <h3 class="text-xl font-bold text-[#E8DCC4] mb-1" style="font-family: 'Cinzel', serif;">SMP NEGERI 4 SUBANG</h3>
+         <p class="text-[#8B7355]">Sekolah Menengah Pertama</p>
+        </div>
+       </div><!-- SMA -->
+       <div class="relative flex items-center md:justify-center">
+        <div class="timeline-dot absolute left-4 md:left-1/2 transform md:-translate-x-1/2 rounded-full z-10"></div>
+        <div class="ml-12 md:ml-0 md:w-5/12 md:ml-auto copper-card p-6 rounded-xl">
+         <div class="flex items-center gap-2 mb-2"><span class="text-[#D4A84B] font-bold" style="font-family: 'Cinzel', serif;">2023 - 2026</span>
+         </div>
+         <h3 class="text-xl font-bold text-[#E8DCC4] mb-1" style="font-family: 'Cinzel', serif;">SMA NEGERI 1 SUBANG</h3>
+         <p class="text-[#8B7355]">Sekolah Menengah Atas</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider max-w-4xl mx-auto my-8"></div><!-- Experience Section -->
+   <section id="experience" class="py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="text-3xl md:text-4xl font-bold brass-text text-center mb-12" style="font-family: 'Cinzel', serif;">⚙ Pengalaman ⚙</h2>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-8"><!-- Organizational Experience -->
+      <div class="copper-card p-6 rounded-xl relative">
+       <div class="rivet absolute top-3 left-3"></div>
+       <div class="rivet absolute top-3 right-3"></div>
+       <h3 class="text-xl font-bold text-[#D4A84B] mb-6 text-center" style="font-family: 'Cinzel', serif;">📜 Pengalaman Organisasi</h3>
+       <ul class="space-y-4">
+        <li class="flex items-start gap-3">
+         <svg class="w-5 h-5 text-[#CD853F] mt-1 flex-shrink-0 gear-spin" viewbox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /> <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+         </svg><span class="text-[#E8DCC4]">Sie. Dokumen Ekstrakurikuler BIOS</span></li>
+        <li class="flex items-start gap-3">
+         <svg class="w-5 h-5 text-[#CD853F] mt-1 flex-shrink-0 gear-spin" style="animation-delay: -0.5s;" viewbox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /> <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+         </svg><span class="text-[#E8DCC4]">Sekretaris Ekstrakurikuler BIOS</span></li>
+        <li class="flex items-start gap-3">
+         <svg class="w-5 h-5 text-[#CD853F] mt-1 flex-shrink-0 gear-spin" style="animation-delay: -1s;" viewbox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /> <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+         </svg><span class="text-[#E8DCC4]">Anggota PB SMANSA</span></li>
+       </ul>
+      </div><!-- Project Experience -->
+      <div class="copper-card p-6 rounded-xl relative">
+       <div class="rivet absolute top-3 left-3"></div>
+       <div class="rivet absolute top-3 right-3"></div>
+       <h3 class="text-xl font-bold text-[#D4A84B] mb-6 text-center" style="font-family: 'Cinzel', serif;">🎬 Pengalaman Kegiatan</h3>
+       <ul class="space-y-4">
+        <li class="flex items-start gap-3">
+         <svg class="w-5 h-5 text-[#CD853F] mt-1 flex-shrink-0" fill="currentColor" viewbox="0 0 24 24"><path d="M4 4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h16v12H4V6zm2 2v2h2V8H6zm4 0v2h8V8h-8zm-4 4v2h2v-2H6zm4 0v2h8v-2h-8z" />
+         </svg><span class="text-[#E8DCC4]">Mengikuti Short Film</span></li>
+        <li class="flex items-start gap-3">
+         <svg class="w-5 h-5 text-[#CD853F] mt-1 flex-shrink-0" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+         </svg><span class="text-[#E8DCC4]">Panitia Diklat Ekstrakurikuler BIOS</span></li>
+        <li class="flex items-start gap-3">
+         <svg class="w-5 h-5 text-[#CD853F] mt-1 flex-shrink-0" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+         </svg><span class="text-[#E8DCC4]">Panitia Diklat Ekstrakurikuler PB SMANSA</span></li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider max-w-4xl mx-auto my-8"></div><!-- Skills Section -->
+   <section id="skills" class="py-12 px-4 pb-24">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="text-3xl md:text-4xl font-bold brass-text text-center mb-12" style="font-family: 'Cinzel', serif;">⚙ Keahlian ⚙</h2>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-8"><!-- Soft Skills -->
+      <div class="copper-card p-6 rounded-xl relative">
+       <div class="rivet absolute top-3 left-3"></div>
+       <div class="rivet absolute top-3 right-3"></div>
+       <div class="rivet absolute bottom-3 left-3"></div>
+       <div class="rivet absolute bottom-3 right-3"></div>
+       <h3 class="text-xl font-bold text-[#D4A84B] mb-6 text-center" style="font-family: 'Cinzel', serif;">🧠 Soft Skills</h3>
+       <div class="space-y-4">
+        <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-[#2D1810]/50 to-transparent rounded-lg border-l-2 border-[#CD853F]"><span class="text-2xl">🎯</span> <span class="text-[#E8DCC4]">Prioritaskan Hal yang Penting</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-[#2D1810]/50 to-transparent rounded-lg border-l-2 border-[#CD853F]"><span class="text-2xl">🔄</span> <span class="text-[#E8DCC4]">Adaptif</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-[#2D1810]/50 to-transparent rounded-lg border-l-2 border-[#CD853F]"><span class="text-2xl">✅</span> <span class="text-[#E8DCC4]">Bertanggung Jawab</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-[#2D1810]/50 to-transparent rounded-lg border-l-2 border-[#CD853F]"><span class="text-2xl">👂</span> <span class="text-[#E8DCC4]">Pendengar yang Baik</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-[#2D1810]/50 to-transparent rounded-lg border-l-2 border-[#CD853F]"><span class="text-2xl">🧘</span> <span class="text-[#E8DCC4]">Berpikir Tenang</span>
+        </div>
+       </div>
+      </div><!-- Hard Skills -->
+      <div class="copper-card p-6 rounded-xl relative">
+       <div class="rivet absolute top-3 left-3"></div>
+       <div class="rivet absolute top-3 right-3"></div>
+       <div class="rivet absolute bottom-3 left-3"></div>
+       <div class="rivet absolute bottom-3 right-3"></div>
+       <h3 class="text-xl font-bold text-[#D4A84B] mb-6 text-center" style="font-family: 'Cinzel', serif;">💻 Hard Skills</h3>
+       <div class="space-y-5">
+        <div>
+         <div class="flex justify-between mb-2"><span class="text-[#E8DCC4]">📸 Editing Foto</span> <span class="text-[#8B7355] text-sm">Picsart, PixelLab, Lightroom</span>
+         </div>
+         <div class="skill-bar h-3 rounded-full">
+          <div class="skill-fill h-full rounded-full" style="width: 85%;"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between mb-2"><span class="text-[#E8DCC4]">🎬 Editing Video</span> <span class="text-[#8B7355] text-sm">Capcut, Youcut, VN</span>
+         </div>
+         <div class="skill-bar h-3 rounded-full">
+          <div class="skill-fill h-full rounded-full" style="width: 80%;"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between mb-2"><span class="text-[#E8DCC4]">🎵 Editing Suara</span> <span class="text-[#8B7355] text-sm">Audio Processing</span>
+         </div>
+         <div class="skill-bar h-3 rounded-full">
+          <div class="skill-fill h-full rounded-full" style="width: 70%;"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between mb-2"><span class="text-[#E8DCC4]">📁 Mengarsipkan Data</span> <span class="text-[#8B7355] text-sm">Data Management</span>
+         </div>
+         <div class="skill-bar h-3 rounded-full">
+          <div class="skill-fill h-full rounded-full" style="width: 90%;"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between mb-2"><span class="text-[#E8DCC4]">📝 Merangkum Materi</span> <span class="text-[#8B7355] text-sm">Content Summarization</span>
+         </div>
+         <div class="skill-bar h-3 rounded-full">
+          <div class="skill-fill h-full rounded-full" style="width: 85%;"></div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="bg-gradient-to-t from-[#0D0705] to-transparent py-8 px-4 border-t-2 border-[#5C3317]">
+    <div class="max-w-6xl mx-auto text-center">
+     <div class="flex items-center justify-center gap-4 mb-4">
+      <svg class="w-8 h-8 gear-spin text-[#D4A84B]" viewbox="0 0 100 100"><path fill="currentColor" d="M50 15 L53 15 L55 10 L60 12 L62 8 L67 12 L70 10 L73 15 L78 15 L78 20 L83 23 L80 28 L85 32 L82 37 L88 42 L83 47 L88 52 L83 57 L88 62 L82 65 L85 70 L80 73 L83 78 L78 80 L78 85 L73 85 L70 90 L67 88 L62 92 L60 88 L55 90 L53 85 L50 85 L47 85 L45 90 L40 88 L38 92 L33 88 L30 90 L27 85 L22 85 L22 80 L17 78 L20 73 L15 70 L18 65 L12 62 L17 57 L12 52 L17 47 L12 42 L18 37 L15 32 L20 28 L17 23 L22 20 L22 15 L27 15 L30 10 L33 12 L38 8 L40 12 L45 10 L47 15 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35" />
+      </svg><span class="brass-text text-lg" style="font-family: 'Cinzel', serif;">DIMAS PRASETYO ADJI</span>
+      <svg class="w-8 h-8 gear-spin-reverse text-[#D4A84B]" viewbox="0 0 100 100"><path fill="currentColor" d="M50 15 L53 15 L55 10 L60 12 L62 8 L67 12 L70 10 L73 15 L78 15 L78 20 L83 23 L80 28 L85 32 L82 37 L88 42 L83 47 L88 52 L83 57 L88 62 L82 65 L85 70 L80 73 L83 78 L78 80 L78 85 L73 85 L70 90 L67 88 L62 92 L60 88 L55 90 L53 85 L50 85 L47 85 L45 90 L40 88 L38 92 L33 88 L30 90 L27 85 L22 85 L22 80 L17 78 L20 73 L15 70 L18 65 L12 62 L17 57 L12 52 L17 47 L12 42 L18 37 L15 32 L20 28 L17 23 L22 20 L22 15 L27 15 L30 10 L33 12 L38 8 L40 12 L45 10 L47 15 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35" />
+      </svg>
+     </div>
+     <p class="text-[#8B7355] text-sm" style="font-family: 'Crimson Text', serif;">© 2024 • Crafted with Steam &amp; Gears ⚙</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    const defaultConfig = {
+      hero_name: 'DIMAS PRASETYO ADJI',
+      hero_quote: '"Iyain aja dulu, Yasudah dan Syukur"',
+      background_color: '#0D0705',
+      brass_color: '#D4A84B',
+      copper_color: '#CD853F',
+      text_color: '#E8DCC4',
+      accent_color: '#8B4513'
+    };
+
+    async function onConfigChange(config) {
+      const heroName = document.getElementById('hero-name');
+      const heroQuote = document.getElementById('hero-quote');
+      
+      if (heroName) {
+        heroName.textContent = config.hero_name || defaultConfig.hero_name;
+      }
+      if (heroQuote) {
+        heroQuote.textContent = config.hero_quote || defaultConfig.hero_quote;
+      }
+      
+      // Apply colors
+      document.documentElement.style.setProperty('--brass', config.brass_color || defaultConfig.brass_color);
+      document.documentElement.style.setProperty('--copper', config.copper_color || defaultConfig.copper_color);
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.brass_color || defaultConfig.brass_color,
+            set: (value) => {
+              config.brass_color = value;
+              window.elementSdk.setConfig({ brass_color: value });
+            }
+          },
+          {
+            get: () => config.copper_color || defaultConfig.copper_color,
+            set: (value) => {
+              config.copper_color = value;
+              window.elementSdk.setConfig({ copper_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || 'Cinzel',
+          set: (value) => {
+            config.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || 16,
+          set: (value) => {
+            config.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['hero_name', config.hero_name || defaultConfig.hero_name],
+        ['hero_quote', config.hero_quote || defaultConfig.hero_quote]
+      ]);
+    }
+
+    // Initialize SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c8b8d241675e794',t:'MTc3MDIyMjYxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
